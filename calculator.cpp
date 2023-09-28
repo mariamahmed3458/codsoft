@@ -38,3 +38,12 @@ int main()
     }
     return 0;
 }
+//Task 2:Simple Calculator 
+//In the main function, The code starts by declaring //3 integers variable ( two for the input from the
+ //user and the third  is for whether the user wants
+ //another operation or not ) and one character which is responsible for the required operation.
+//The program asks the user to enter two number and to choose whish operation he wants to be done 
+//on them and after the operation is done ,the program asks the user if he wants to do another 
+//operation and for this I use goto statement .
+
+//In this task , I got used to use goto Statement and know more about its syntax. 
