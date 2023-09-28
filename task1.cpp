@@ -3,7 +3,7 @@
 using namespace std;
 
 int main() {
-    int number = rand();
+    int number = rand() %2000;  //%2000 makes rand choose number from 1 to 1999 and also to prevent very large numbers.
     int guess;
     cout << "Enter a guess: ";
     cin >> guess;
