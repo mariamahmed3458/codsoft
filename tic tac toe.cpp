@@ -1,103 +1,111 @@
 #include <iostream>
-using namespace std ;
+using namespace std;
+
 const int ROWS = 3;
 const int COLS = 3;
 
 void drawBoard(int board[][COLS]) {
-    cout << " 1 2 3" <<endl;
+    cout << endl;
+    for (int j = 1; j <= COLS; j++) {
+        cout << j << " ";
+    }
+    cout << endl;
     for (int i = 0; i < ROWS; i++) {
-        
-    cout << i + 1 << " ";
+        cout << i + 1 << " ";
         for (int j = 0; j < COLS; j++) {
-            if (board[i][j] == 1)
-               cout << "X ";
-            else if (board[i][j] == -1)
+            if (board[i][j] == 1) {
+                cout << "X ";
+            } else if (board[i][j] == -1) {
                 cout << "O ";
-            else
-               cout << " ";
+            } else {
+                cout << "- ";
+            }
         }
         cout << endl;
     }
+    cout << endl;
 }
 
 bool checkWin(int board[][COLS]) {
-    // Check rows
+    // check rows
     for (int i = 0; i < ROWS; i++) {
         int sum = 0;
         for (int j = 0; j < COLS; j++) {
             sum += board[i][j];
         }
-        if (sum == 3 || sum == -3)
+        if (sum == 3 || sum == -3) {
             return true;
+        }
     }
 
-    // Check columns
+    // check columns
     for (int i = 0; i < COLS; i++) {
         int sum = 0;
         for (int j = 0; j < ROWS; j++) {
             sum += board[j][i];
         }
-        if (sum == 3 || sum == -3)
+        if (sum == 3 || sum == -3) {
             return true;
+        }
     }
 
-    // Check diagonals
+    // check diagonals
     int sum = board[0][0] + board[1][1] + board[2][2];
-    if (sum == 3 || sum == -3)
+    if (sum == 3 || sum == -3) {
         return true;
+    }
 
     sum = board[0][2] + board[1][1] + board[2][0];
-    if (sum == 3 || sum == -3)
+    if (sum == 3 || sum == -3) {
         return true;
+    }
 
     return false;
 }
 
 int main() {
     int board[ROWS][COLS] = {0};
-    int currentPlayer = 1;
-    bool gameOver = false;
+    string players[2] = {"Player X", "Player O"};
+    int player = 0;
+    bool win = false;
 
-    while (!gameOver) {
+    while (!win) {
         drawBoard(board);
+        cout << players[player] << ", enter row (1-3): ";
+        int row;
+        cin >> row;
 
-        int row, col;
-        cout << "Player " << (currentPlayer == 1 ? "X" : "O") << ", enter your move (row column): ";
-        cin >> row >> col;
+        while (row < 1 || row > 3) {
+            cout << "Invalid row number. Please enter row (1-3): ";
+            cin >> row;
+        }
 
-        if (row < 1 || row > ROWS || col < 1 || col > COLS || board[row - 1][col - 1] != 0) {
-            cout << "Invalid move. Try again." <<endl;
+        cout << players[player] << ", enter column (1-3): ";
+        int col;
+        cin >> col;
+
+        while (col < 1 || col > 3) {
+            cout << "Invalid column number. Please enter column (1-3): ";
+            cin >> col;
+        }
+
+        if (board[row - 1][col - 1] != 0) {
+            cout << "That spot is already taken. Please try again." << endl;
             continue;
         }
 
-        board[row - 1][col - 1] = currentPlayer;
-
-        if (checkWin(board)) {
-            drawBoard(board);
-            cout << "Player " << (currentPlayer == 1 ? "X" : "O") << " wins!" <<endl;
-            gameOver = true;
+        if (player == 0) {
+            board[row - 1][col - 1] = 1;
+            player = 1;
         } else {
-            bool isBoardFull = true;
-            for (int i = 0; i < ROWS; i++) {
-                for (int j = 0; j < COLS; j++) {
-                    if (board[i][j] == 0) {
-                        isBoardFull = false;
-                        break;
-                    }
-                }
-                if (!isBoardFull)
-                    break;
-            }
-
-            if (isBoardFull) {
-                drawBoard(board);
-                cout << "It's a draw!" <<endl;
-                gameOver = true;
-            } else {
-                currentPlayer = -currentPlayer;
-            }
+            board[row - 1][col - 1] = -1;
+            player = 0;
         }
+
+        win = checkWin(board);
     }
 
+    drawBoard(board);
+    cout << players[player] << " wins!" << endl;
     return 0;
 }
