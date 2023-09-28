@@ -1,6 +1,5 @@
-#include <iostream>
+ #include <iostream>
 using namespace std;
-
 const int ROWS = 3;
 const int COLS = 3;
 
@@ -62,14 +61,23 @@ bool checkWin(int board[][COLS]) {
 
     return false;
 }
-
+bool checkTie(int board[][COLS]) {
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            if (board[i][j] == 0) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
 int main() {
     int board[ROWS][COLS] = {0};
     string players[2] = {"Player X", "Player O"};
     int player = 0;
     bool win = false;
 
-    while (!win) {
+    while (!win && !checkTie(board)) {
         drawBoard(board);
         cout << players[player] << ", enter row (1-3): ";
         int row;
@@ -96,16 +104,23 @@ int main() {
 
         if (player == 0) {
             board[row - 1][col - 1] = 1;
-            player = 1;
+          player = 1;
+         
         } else {
             board[row - 1][col - 1] = -1;
-            player = 0;
+          player = 0;
         }
 
         win = checkWin(board);
     }
 
     drawBoard(board);
-    cout << players[player] << " wins!" << endl;
+   if (win) {
+        cout << players[(player+1)%2] << " wins!" << endl;
+
+    } else {
+        cout << "It's a tie!" << endl;
+    }
+    
     return 0;
 }
